@@ -62,9 +62,10 @@ class Api extends EventEmitter {
     )
   }
   
-  publish (routingKey, content, options) {
+  publish (exName, routingKey, content, options) {
+    const exchange = this.options.toExchangeName(exName)
     return this.pool.use(channel =>
-      channel.publish('', content, { routingKey, ...options })
+      channel.publish(exchange, content, { routingKey, ...options })
     )
   }
 
