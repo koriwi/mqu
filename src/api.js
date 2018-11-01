@@ -61,6 +61,12 @@ class Api extends EventEmitter {
         .then(() => channel.publish('', content, { routingKey: queue }))
     )
   }
+  
+  publish (routingKey, content, options) {
+    return this.pool.use(channel =>
+      channel.publish('', content, { routingKey, ...options })
+    )
+  }
 
   consumeJob (name, consumer, options) {
     const queue = this.options.toQueueName(name)
