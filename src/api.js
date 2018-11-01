@@ -69,10 +69,32 @@ class Api extends EventEmitter {
     )
   }
   
+  consume (qname, consumer, options) {
+    const queue = this.options.toQueueName(qname)
+    return this.pool.acquire().then(channel =>
+      channel.consume(queue, consumer, options)
+    )
+  }
+  
   createExchange (name, options = { type: 'fanout' }) {
     const exchange = this.options.toExchangeName(name)
     return this.pool.use(channel =>
       channel.declareExchange(exchange, options)
+    )
+  }
+  
+  createQueue (name, options = { autoDelete: false, durable: true }) {
+    const queue = this.options.toQueueName(name)
+    return this.pool.use(channel =>
+      channel.declareQueue(queue, options)
+    )
+  }
+  
+  bindQueue (qname, exname, routingKey) {
+    const queue = this.options.toQueueName(qname)
+    const exchange = this.options.toExchangeName(exname)
+    return this.pool.use(channel =>
+      channel.bindQueue(queue, exchange, { routingKey })
     )
   }
 
