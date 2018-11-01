@@ -68,6 +68,13 @@ class Api extends EventEmitter {
       channel.publish(exchange, content, { routingKey, ...options })
     )
   }
+  
+  createExchange (name, options = { type: 'fanout' }) {
+    const exchange = this.options.toExchangeName(name)
+    return this.pool.use(channel =>
+      channel.declareExchange(exchange, options)
+    )
+  }
 
   consumeJob (name, consumer, options) {
     const queue = this.options.toQueueName(name)
