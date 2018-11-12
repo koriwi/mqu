@@ -1,13 +1,13 @@
-# mqu
+# mqudr
 
 ```bash
-npm i mqu
+npm i mqudr
 ```
 
 ## Example
 
 ```js
-const mqu = require('mqu')('amqp://guest:guest@localhost:5672')
+const mqu = require('mqudr')('amqp://guest:guest@localhost:5672')
 
 mqu.on('error', error => {
   console.error('oh my, error!!', error)
